@@ -369,8 +369,16 @@ $('startBtn').addEventListener('click', () => {
   gallery.classList.remove('hidden');
   musicBtn.classList.remove('hidden');
   window.scrollTo({ top: 0 });
-  music.volume = 0.35;
-  music.play().catch(() => {});
+ music.volume = 0.35;
+
+music.play()
+  .then(() => {
+    musicBtn.textContent = "♪";
+    musicBtn.style.opacity = "1";
+  })
+  .catch((error) => {
+    console.error("Music failed to start:", error);
+  });
 });
 
 /* Love letter: types out when it scrolls into view */
@@ -418,11 +426,20 @@ yes.addEventListener('click', () => {
 });
 
 /* Music toggle */
-musicBtn.addEventListener('click', () => {
-  if (music.paused) { music.play(); musicBtn.textContent = '♪'; musicBtn.style.opacity = 1; }
-  else { music.pause(); musicBtn.style.opacity = .5; }
+musicBtn.addEventListener("click", async () => {
+    try {
+        if (music.paused) {
+            await music.play();
+            musicBtn.textContent = "♪";
+            musicBtn.style.opacity = "1";
+        } else {
+            music.pause();
+            musicBtn.style.opacity = "0.5";
+        }
+    } catch (error) {
+        console.error("Music playback failed:", error);
+    }
 });
-
 /* Floating hearts */
 function spawnHeart() {
   const h = document.createElement('div');
