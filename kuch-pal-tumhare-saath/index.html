@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Kuch Pal Tumhare Saath</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --night: #1a0e19;
+  --wine: #4a1730;
+  --rose: #e8788f;
+  --blush: #f6d9de;
+  --gold: #e9c28a;
+  --paper: #fbf3ee;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --hand: 'Caveat', 'Segoe Script', cursive;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--serif);
+  background: var(--night);
+  color: var(--blush);
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+.hidden { display: none !important; }
+button:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+
+/* ---------- Landing ---------- */
+#landing {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2.5rem; padding: 2rem; text-align: center;
+  background: var(--night);
+}
+#landing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(rgba(26,14,25,.38), rgba(26,14,25,.6)),
+    url("hero-background.jpg") center 38% / 75% auto no-repeat;
+}
+#landing h1 {
+  font-weight: 600;
+  font-size: clamp(2.6rem, 9vw, 5.5rem);
+  line-height: 1.05;
+  color: var(--paper);
+  letter-spacing: -0.01em;
+}
+#landing h1 em { display: block; font-style: italic; font-weight: 500; color: var(--rose); }
+#landing .sub { font-family: var(--hand); font-size: 1.5rem; color: var(--gold); margin-top: 1rem; }
+#startBtn {
+  font-family: var(--serif); font-size: 1.2rem; font-weight: 600;
+  padding: 0.9rem 2.4rem; border-radius: 999px; border: 1.5px solid var(--gold);
+  background: transparent; color: var(--gold); cursor: pointer;
+  transition: background .3s, color .3s;
+}
+#startBtn:hover { background: var(--gold); color: var(--night); }
+
+/* ---------- Gallery ---------- */
+#gallery { padding: 6rem 1.25rem 3rem; background: linear-gradient(var(--night), var(--wine) 45%, var(--night)); }
+.section-title {
+  text-align: center; font-weight: 600; font-style: italic;
+  font-size: clamp(2rem, 6vw, 3.4rem); color: var(--paper); margin-bottom: 4rem;
+}
+.polaroid {
+  display: block; width: min(86vw, 420px); margin: 0 auto 4.5rem;
+  background: var(--paper); padding: 14px 14px 20px; border-radius: 3px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.5);
+  transform: rotate(var(--tilt, -2deg));
+  opacity: 0; translate: 0 40px;
+  transition: opacity 1s ease, translate 1s ease;
+  cursor: zoom-in; border: 0; text-align: center; font: inherit; color: inherit;
+}
+.polaroid:nth-child(even) { margin-left: auto; margin-right: max(0px, calc(50% - 300px)); }
+.polaroid:nth-child(odd)  { margin-right: auto; margin-left: max(0px, calc(50% - 300px)); }
+@media (max-width: 700px) { .polaroid { margin-left: auto !important; margin-right: auto !important; } }
+.polaroid.visible { opacity: 1; translate: 0 0; }
+.polaroid img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; background: #2a1a28; }
+.polaroid.missing-photo { cursor: default; }
+.photo-placeholder {
+  display: grid; place-items: center; width: 100%; aspect-ratio: 4/5;
+  padding: 1rem; background: #2a1a28; color: var(--gold);
+  font-family: var(--hand); font-size: 1.5rem;
+}
+.polaroid span { display: block; margin-top: 14px; font-family: var(--hand); font-size: 1.9rem; line-height: 1.1; color: #4a1730; }
+.video-placeholder {
+  display: grid; place-items: center; width: 100%; aspect-ratio: 16/9;
+  padding: 1rem; border: 0; background: #2a1a28; color: var(--gold);
+  font: inherit; font-family: var(--hand); font-size: 1.5rem; cursor: pointer;
+}
+.video-card video { display: block; width: 100%; aspect-ratio: 16/9; background: #2a1a28; }
+
+.ending { text-align: center; padding: 3rem 1rem 2rem; }
+.ending h2 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 600; color: var(--paper); }
+.ending p { margin-top: .75rem; font-family: var(--hand); font-size: 1.7rem; color: var(--gold); }
+
+/* ---------- Date Badge (end of all sections) ---------- */
+.date-badge-end {
+  text-align: center;
+  font-family: var(--hand);
+  font-size: 2.4rem;
+  color: var(--gold);
+  padding: 2rem 1rem 4rem;
+  letter-spacing: 0.5px;
+  opacity: 0.95;
+  text-shadow: 0 0 20px rgba(233, 194, 138, 0.3);
+}
+.date-badge-note { display: block; margin-top: 0.35rem; font-size: 1.25rem; }
+
+/* ---------- Letter ---------- */
+.letter{max-width:560px;margin:0 auto 5rem;background:var(--paper);color:var(--wine);padding:2rem 1.75rem;border-radius:3px;box-shadow:0 18px 40px rgba(0,0,0,.5);transform:rotate(-1deg);font-family:var(--hand);font-size:clamp(1.4rem,4.5vw,1.8rem);line-height:1.45;white-space:pre-wrap;min-height:17rem}
+/* ---------- Reasons ---------- */
+.reasons{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;max-width:640px;margin:0 auto 5rem}
+.flip{perspective:800px;height:150px;background:none;border:0;cursor:pointer;font:inherit}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;display:grid;place-items:center;padding:12px;border-radius:10px;backface-visibility:hidden;-webkit-backface-visibility:hidden;text-align:center}
+.face.front{background:var(--wine);border:1px solid var(--gold);color:var(--gold);font-size:2rem}
+.face.back{background:var(--rose);color:var(--night);transform:rotateY(180deg);font-size:1.15rem;font-weight:600;line-height:1.25}
+/* ---------- Question ---------- */
+.ask{text-align:center;margin:0 auto 4rem;max-width:520px;min-height:14rem}
+.ask h3{font-size:clamp(1.6rem,5vw,2.4rem);font-weight:600;color:var(--paper);margin-bottom:2rem}
+.ask .row{display:flex;gap:1.5rem;justify-content:center;align-items:center;flex-wrap:wrap}
+.ask button{font-family:var(--serif);font-size:1.15rem;font-weight:600;padding:.8rem 2rem;border-radius:999px;border:1.5px solid var(--gold);cursor:pointer}
+#yesBtn{background:var(--gold);color:var(--night);transition:transform .3s}
+#noBtn{background:transparent;color:var(--gold);transition:transform .25s}
+#yesMsg{font-family:var(--hand);font-size:2rem;color:var(--gold);margin-top:1.5rem}
+
+/* ---------- Music toggle ---------- */
+#musicBtn {
+  position: fixed; top: calc(1rem + env(safe-area-inset-top, 0px)); right: 1rem; z-index: 20;
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,.3);
+  background: rgba(26,14,25,.6); color: var(--blush); font-size: 1.2rem; cursor: pointer;
+}
+
+/* ---------- Floating hearts ---------- */
+.heart {
+  position: fixed; bottom: -40px; pointer-events: none; z-index: 5; color: var(--rose);
+  animation: floatUp linear forwards;
+}
+@keyframes floatUp {
+  from { transform: translateY(0) rotate(0); opacity: .8; }
+  to   { transform: translateY(-112vh) rotate(300deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .heart { display: none; }
+  .polaroid { transition: none; opacity: 1; translate: 0 0; }
+}
+</style>
+</head>
+<body>
+
+<button id="musicBtn" class="hidden" aria-label="Toggle music">♪</button>
+
+<!-- Landing -->
+<div id="landing">
+  <div>
+    <h1>Kuch Pal<em>Tumhare Saath</em></h1>
+    <p class="sub">ek chhoti si kahani, sirf tumhare liye</p>
+  </div>
+  <button id="startBtn">Shuru karein</button>
+</div>
+
+<!-- Gallery -->
+<section id="gallery" class="hidden">
+  <h2 class="section-title">Tumhari Yaadein</h2>
+  <div id="cards"></div>
+
+  <h2 class="section-title">Tumhare Videos</h2>
+  <div id="videoCards"></div>
+
+  <h2 class="section-title">Ek chhoti si chitthi</h2>
+  <div class="letter" id="letter" aria-label="Love letter"></div>
+
+  <h2 class="section-title">Tumse pyaar kyun hai</h2>
+  <div class="reasons" id="reasons"></div>
+
+  <div class="ask">
+    <h3>Hamesha mere saath rahogi?</h3>
+    <div class="row"><button id="yesBtn">Haan</button><button id="noBtn">Nahi</button></div>
+    <p id="yesMsg" class="hidden"></p>
+  </div>
+
+  <div class="ending">
+    <h2>Hamesha Tumhare Saath</h2>
+    <p>The End... ya sirf shuruaat</p>
+  </div>
+
+  <!-- Date badge at the very end -->
+  <div class="date-badge-end" id="dateDisplay"></div>
+</section>
+
+<audio id="bgMusic" loop preload="auto"><source src="../song.mp3" type="audio/mpeg" /></audio>
+
+<script src="media-manifest.js"></script>
+<script>
+/* ======== EDIT THIS PART ======== */
+const START_DATE = '2024-04-28';
+const PHOTO_CAPTIONS = [
+  'Tumhari muskaan ka pyaara pal',
+  'Dil ke kareeb ek yaad',
+  'Saath ka suhana lamha',
+  'Har pal tumhare naam',
+  'Ek yaad jo dil ko chhoo jaaye',
+  'Tumhare saath sab kuch khaas',
+  'Meri pasandida yaadon mein se ek',
+  'Pyaar se saja ek khoobsurat pal',
+  'Tum ho toh har pal haseen',
+  'Yaadon mein mehka tumhara saath',
+  'Dil mein basa ek haseen lamha',
+  'Mere chehre ki muskaan ki wajah'
+];
+const VIDEO_CAPTIONS = [
+  'Tumhare saath ka pyaara ehsaas',
+  'Ek lamha, hazaar khushiyan',
+  'Dil mein sambhali hui yaad',
+  'Tumhari hansi, meri khushi',
+  'Saath bitaya ek haseen pal',
+  'Yeh pal hamesha khaas rahega',
+  'Har yaad mein tumhara pyaar',
+  'Meri duniya ka sabse pyaara hissa',
+  'Tumhare naam ek khoobsurat yaad',
+  'Pyaar bhara ek yaadgaar lamha',
+  'Tum paas ho toh sab haseen hai',
+  'Dil ko khush kar dene wala pal'
+];
+const MEMORIES = Array.from({ length: 213 }, (_, i) => {
+  const number = i + 1;
+  return {
+    src: `image/${encodeURIComponent(window.MEDIA_FILES.images[i] || `photo${number}.jpg`)}`,
+    caption: `${PHOTO_CAPTIONS[i % PHOTO_CAPTIONS.length]} · ${number}`
+  };
+});
+const VIDEOS = Array.from({ length: 233 }, (_, i) => ({
+  src: `video/${encodeURIComponent(window.MEDIA_FILES.videos[i] || `video${i + 1}.mp4`)}`,
+  caption: VIDEO_CAPTIONS[i % VIDEO_CAPTIONS.length]
+}));
+const LETTER = `Meri jaan,
+
+Tumse milne se pehle mujhe nahi pata tha ki khushi itni chhoti chhoti baaton mein hoti hai. Tumhari hansi, tumhari baatein, aur tumhara saath, bas yahi sab kuch hai.
+
+Jab tak tum ho, har safar sundar hai.
+
+Hamesha tumhara.`;
+const REASONS = [
+  'Teri hansi meri sabse pyaari awaaz hai',
+  'Tum mere bure din ko bhi achha bana deti ho',
+  'Tumhare saath waqt ruk sa jaata hai',
+  'Tumhari chhoti chhoti baatein',
+  'Tum jaisi ho, bilkul perfect ho',
+  'Tum mera ghar ho'
+];
+const YES_MESSAGE = 'Pata tha! Main bhi hamesha tumhare saath hoon.';
+/* ================================ */
+
+const $ = id => document.getElementById(id);
+const landing = $('landing'), gallery = $('gallery'), music = $('bgMusic'), musicBtn = $('musicBtn');
+
+/* ---------- DATE DISPLAY (at the very end of all sections) ---------- */
+(function showDate() {
+  const el = $('dateDisplay');
+  if (!el) return;
+
+  const parts = START_DATE.split('-');
+  const year = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10) - 1;
+  const day = parseInt(parts[2], 10);
+  const start = new Date(year, month, day);
+
+  if (isNaN(start.getTime())) {
+    el.textContent = START_DATE;
+    return;
+  }
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const formatted = `${day} ${monthNames[month]} ${year}`;
+
+  const today = new Date();
+  const startDay = Date.UTC(year, month, day);
+  const todayDay = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  const diffDays = Math.floor((todayDay - startDay) / 86400000);
+  const daysText = diffDays >= 0 ? ` · ${diffDays} din` : '';
+
+  el.textContent = `❤️ ${formatted}${daysText} ❤️`;
+  const note = document.createElement('span');
+  note.className = 'date-badge-note';
+  note.textContent = `From ${formatted} until today`;
+  el.appendChild(note);
+})();
+
+/* Build photo cards */
+const tilts = [-2.5, 2, -1.5, 3, -3, 1.5];
+const observer = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.2 });
+
+MEMORIES.forEach((m, i) => {
+  const card = document.createElement('button');
+  card.className = 'polaroid';
+  card.style.setProperty('--tilt', tilts[i % tilts.length] + 'deg');
+  card.setAttribute('aria-label', 'Open photo: ' + m.caption);
+  const img = new Image();
+  img.alt = m.caption; img.loading = 'lazy';
+  img.addEventListener('error', () => {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'photo-placeholder';
+    placeholder.textContent = `Upload photo${i + 1}.jpg`;
+    card.classList.add('missing-photo');
+    card.setAttribute('aria-label', `Upload photo${i + 1}.jpg`);
+    img.replaceWith(placeholder);
+  });
+  img.src = m.src;
+  const cap = document.createElement('span');
+  cap.textContent = m.caption;
+  card.append(img, cap);
+  $('cards').appendChild(card);
+  observer.observe(card);
+});
+
+VIDEOS.forEach((v, i) => {
+  const card = document.createElement('div');
+  card.className = 'polaroid video-card';
+  card.style.setProperty('--tilt', tilts[i % tilts.length] + 'deg');
+  const placeholder = document.createElement('button');
+  placeholder.className = 'video-placeholder';
+  placeholder.type = 'button';
+  placeholder.textContent = `Tap to load video ${i + 1}`;
+  placeholder.setAttribute('aria-label', `Load video ${i + 1}`);
+  placeholder.addEventListener('click', () => {
+    const video = document.createElement('video');
+    video.controls = true;
+    video.preload = 'metadata';
+    video.setAttribute('aria-label', v.caption);
+    video.addEventListener('error', () => {
+      const missing = document.createElement('div');
+      missing.className = 'video-placeholder';
+      missing.textContent = `Video ${i + 1} unavailable. Check the video folder.`;
+      video.replaceWith(missing);
+    }, { once: true });
+    video.src = v.src;
+    video.load();
+    placeholder.replaceWith(video);
+  }, { once: true });
+  const caption = document.createElement('span');
+  caption.textContent = v.caption;
+  card.append(placeholder, caption);
+  $('videoCards').appendChild(card);
+  observer.observe(card);
+});
+
+/* Start */
+$('startBtn').addEventListener('click', () => {
+  landing.classList.add('hidden');
+  gallery.classList.remove('hidden');
+  musicBtn.classList.remove('hidden');
+  window.scrollTo({ top: 0 });
+  music.volume = 0.35;
+  music.play().catch(() => {});
+});
+
+/* Love letter: types out when it scrolls into view */
+const letterEl = $('letter');
+let typed = false;
+new IntersectionObserver((es, o) => {
+  if (es[0].isIntersecting && !typed) { typed = true; o.disconnect(); typeLetter(); }
+}, { threshold: 0.4 }).observe(letterEl);
+function typeLetter() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { letterEl.textContent = LETTER; return; }
+  let i = 0;
+  const t = setInterval(() => {
+    letterEl.textContent = LETTER.slice(0, ++i);
+    if (i >= LETTER.length) clearInterval(t);
+  }, 35);
+}
+
+/* Reasons: tap to flip */
+REASONS.forEach((text, i) => {
+  const b = document.createElement('button');
+  b.className = 'flip';
+  b.setAttribute('aria-label', 'Reason ' + (i + 1) + ', tap to flip');
+  b.innerHTML = '<div class="flip-in"><div class="face front">♥</div><div class="face back"></div></div>';
+  b.querySelector('.back').textContent = text;
+  b.addEventListener('click', () => b.classList.toggle('on'));
+  $('reasons').appendChild(b);
+});
+
+/* The question */
+const yes = $('yesBtn'), no = $('noBtn');
+let grow = 1;
+function dodge() {
+  no.style.transform = `translate(${(Math.random() - .5) * 200}px, ${(Math.random() - .5) * 120}px)`;
+  grow = Math.min(grow + .12, 2);
+  yes.style.transform = `scale(${grow})`;
+}
+no.addEventListener('pointerenter', dodge);
+no.addEventListener('click', dodge);
+yes.addEventListener('click', () => {
+  no.classList.add('hidden');
+  const m = $('yesMsg');
+  m.textContent = YES_MESSAGE;
+  m.classList.remove('hidden');
+  for (let i = 0; i < 40; i++) setTimeout(spawnHeart, i * 60);
+});
+
+/* Music toggle */
+musicBtn.addEventListener('click', () => {
+  if (music.paused) { music.play(); musicBtn.textContent = '♪'; musicBtn.style.opacity = 1; }
+  else { music.pause(); musicBtn.style.opacity = .5; }
+});
+
+/* Floating hearts */
+function spawnHeart() {
+  const h = document.createElement('div');
+  h.className = 'heart';
+  h.textContent = '♥';
+  h.style.left = Math.random() * 100 + 'vw';
+  h.style.fontSize = (12 + Math.random() * 20) + 'px';
+  h.style.animationDuration = (6 + Math.random() * 5) + 's';
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 11000);
+}
+setInterval(spawnHeart, 900);
+
+</script>
+</body>
+</html>
